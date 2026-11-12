@@ -19,8 +19,9 @@ const title=document.getElementById('title'),menu=document.getElementById('menu'
 const names={cre:'CRE',hospitality:'Hospitality',estates:'Estates',about:'About',contact:'Contact',privacy:'Legal / Privacy'};
 const selected=()=>!!names[location.hash.slice(1)];const hover=()=>matchMedia('(hover: hover)').matches;const show=open=>{const expanded=open||selected();menu.hidden=!expanded;title.setAttribute('aria-expanded',String(expanded))};
 landing.addEventListener('mouseenter',()=>{if(hover())show(true)});landing.addEventListener('mouseleave',()=>{if(hover())show(false)});
-title.addEventListener('click',e=>show(e.detail===0||!hover()?menu.hidden:true));
-title.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(menu.hidden)}});
+const toggleTitle=()=>{if(selected()||!menu.hidden){if(selected())history.pushState(null,'',location.pathname+location.search);route();show(false)}else show(true)};
+title.addEventListener('click',toggleTitle);
+title.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTitle()}});
 landing.addEventListener('focusout',e=>{if(!landing.contains(e.relatedTarget))show(false)});
 landing.addEventListener('keydown',e=>{if(e.key==='Escape'){show(false);title.focus({preventScroll:true})}});
 document.addEventListener('pointerdown',e=>{if(!landing.contains(e.target))show(false)});
